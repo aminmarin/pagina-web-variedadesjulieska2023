@@ -1,0 +1,515 @@
+CREATE DATABASE variedadesJuliesK3;
+USE variedadesJuliesK3;
+
+CREATE TABLE Categorias (
+  id_Categoria Int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  nombre_C Varchar(30),
+  descripcion Varchar(50)
+);
+
+CREATE TABLE Marcas (
+  id_Marca Int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  nombre_Marca Varchar(60)
+);
+
+
+
+
+
+CREATE TABLE Usuario (
+  id_Usuario Int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  nombre_Usuario Varchar(30) NOT NULL,
+  contrasena Varchar(16) NOT NULL,
+  rol Varchar (20) NOT NULL
+);
+
+
+
+
+CREATE TABLE Clientes (
+  id_Cliente Int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  cedula Varchar(16),
+  nombre Varchar(30),
+  apellido Varchar(30),
+  historialdecompras Varchar(200),
+  id_Usuario Int UNIQUE
+);
+
+INSERT INTO Clientes (cedula, nombre, apellido, historialdecompras, id_Usuario)
+VALUES ('1234567890', 'Juan', 'Perez', 'Compras varios artículos', NULL);
+
+CREATE TABLE Productos (
+  id_Producto Int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id_Categoria Int,
+  nombre Varchar(30),
+  descripcion Varchar(200),
+  precio Decimal(12,2),
+  id_Marca Int,
+  id_Promociones Int
+);
+
+CREATE TABLE Ventas (
+  cod_Venta INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id_Cliente INT,
+  id_Vendedor INT,
+  cantidadProducto INT,
+  id_ModoPago INT,
+  fecha DATE,
+  Estado VARCHAR(50),
+  TipoVentas VARCHAR(20),
+  Direccion_Envio VARCHAR(50),
+  Total_Venta INT
+);
+
+
+CREATE TABLE DetalleVenta (
+  cod_Venta Int,
+  cantidad Int,
+  id_producto Int,
+  PrecioUnitario Int,
+  TotalDetalle int
+);
+
+CREATE TABLE Reseñas (
+  id_Reseña INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  id_Producto INT,
+  id_Cliente INT,
+  calificacion INT,
+  comentario Varchar(200),
+  fecha DATE,
+  FOREIGN KEY (id_Producto) REFERENCES Productos(id_Producto),
+  FOREIGN KEY (id_Cliente) REFERENCES Clientes(id_Cliente)
+);
+
+
+
+ CREATE TABLE bitacora (
+ id_bitacora INT NOT NULL AUTO_INCREMENT,
+ transaccion VARCHAR(10) NOT NULL,
+ usuario VARCHAR (40),
+ fecha DATETIME NOT NULL,
+ tabla VARCHAR (22) NOT NULL,
+ PRIMARY KEY (id_bitacora)
+ );
+ 
+
+DELIMITER //
+
+-- Trigger para Categorias
+CREATE TRIGGER trg_Categorias
+AFTER INSERT, UPDATE, DELETE ON Categorias
+FOR EACH ROW
+BEGIN
+  DECLARE accion VARCHAR(10);
+  IF (INSERTING) THEN
+    SET accion = 'INSERT';
+  ELSEIF (UPDATING) THEN
+    SET accion = 'UPDATE';
+  ELSE
+    SET accion = 'DELETE';
+  END IF;
+
+  INSERT INTO bitacora (transaccion, usuario, fecha, tabla)
+  VALUES (accion, USER(), NOW(), 'Categorias');
+END //
+
+-- Trigger para Marcas
+CREATE TRIGGER trg_Marcas
+AFTER INSERT, UPDATE, DELETE ON Marcas
+FOR EACH ROW
+BEGIN
+  DECLARE accion VARCHAR(10);
+  IF (INSERTING) THEN
+    SET accion = 'INSERT';
+  ELSEIF (UPDATING) THEN
+    SET accion = 'UPDATE';
+  ELSE
+    SET accion = 'DELETE';
+  END IF;
+
+  INSERT INTO bitacora (transaccion, usuario, fecha, tabla)
+  VALUES (accion, USER(), NOW(), 'Marcas');
+END //
+
+-- Trigger para Usuario
+CREATE TRIGGER trg_Usuario
+AFTER INSERT, UPDATE, DELETE ON Usuario
+FOR EACH ROW
+BEGIN
+  DECLARE accion VARCHAR(10);
+  IF (INSERTING) THEN
+    SET accion = 'INSERT';
+  ELSEIF (UPDATING) THEN
+    SET accion = 'UPDATE';
+  ELSE
+    SET accion = 'DELETE';
+  END IF;
+
+  INSERT INTO bitacora (transaccion, usuario, fecha, tabla)
+  VALUES (accion, USER(), NOW(), 'Usuario');
+END //
+
+-- Trigger para Clientes
+CREATE TRIGGER trg_Clientes
+AFTER INSERT, UPDATE, DELETE ON Clientes
+FOR EACH ROW
+BEGIN
+  DECLARE accion VARCHAR(10);
+  IF (INSERTING) THEN
+    SET accion = 'INSERT';
+  ELSEIF (UPDATING) THEN
+    SET accion = 'UPDATE';
+  ELSE
+    SET accion = 'DELETE';
+  END IF;
+
+  INSERT INTO bitacora (transaccion, usuario, fecha, tabla)
+  VALUES (accion, USER(), NOW(), 'Clientes');
+END //
+
+-- Trigger para Productos
+CREATE TRIGGER trg_Productos
+AFTER INSERT, UPDATE, DELETE ON Productos
+FOR EACH ROW
+BEGIN
+  DECLARE accion VARCHAR(10);
+  IF (INSERTING) THEN
+    SET accion = 'INSERT';
+  ELSEIF (UPDATING) THEN
+    SET accion = 'UPDATE';
+  ELSE
+    SET accion = 'DELETE';
+  END IF;
+
+  INSERT INTO bitacora (transaccion, usuario, fecha, tabla)
+  VALUES (accion, USER(), NOW(), 'Productos');
+END //
+
+-- Trigger para Ventas
+CREATE TRIGGER trg_Ventas
+AFTER INSERT, UPDATE, DELETE ON Ventas
+FOR EACH ROW
+BEGIN
+  DECLARE accion VARCHAR(10);
+  IF (INSERTING) THEN
+    SET accion = 'INSERT';
+  ELSEIF (UPDATING) THEN
+    SET accion = 'UPDATE';
+  ELSE
+    SET accion = 'DELETE';
+  END IF;
+
+  INSERT INTO bitacora (transaccion, usuario, fecha, tabla)
+  VALUES (accion, USER(), NOW(), 'Ventas');
+END //
+
+-- Trigger para DetalleVenta
+CREATE TRIGGER trg_DetalleVenta
+AFTER INSERT, UPDATE, DELETE ON DetalleVenta
+FOR EACH ROW
+BEGIN
+  DECLARE accion VARCHAR(10);
+  IF (INSERTING) THEN
+    SET accion = 'INSERT';
+  ELSEIF (UPDATING) THEN
+    SET accion = 'UPDATE';
+  ELSE
+    SET accion = 'DELETE';
+  END IF;
+
+  INSERT INTO bitacora (transaccion, usuario, fecha, tabla)
+  VALUES (accion, USER(), NOW(), 'DetalleVenta');
+END //
+
+-- Trigger para Reseñas
+CREATE TRIGGER trg_Reseñas
+AFTER INSERT, UPDATE, DELETE ON Reseñas
+FOR EACH ROW
+BEGIN
+  DECLARE accion VARCHAR(10);
+  IF (INSERTING) THEN
+    SET accion = 'INSERT';
+  ELSEIF (UPDATING) THEN
+    SET accion = 'UPDATE';
+  ELSE
+    SET accion = 'DELETE';
+  END IF;
+
+  INSERT INTO bitacora (transaccion, usuario, fecha, tabla)
+  VALUES (accion, USER(), NOW(), 'Reseñas');
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+-- Procedimientos para Categorias
+CREATE PROCEDURE InsertarCategoria(
+  IN p_nombre_C Varchar(30),
+  IN p_descripcion Varchar(50)
+)
+BEGIN
+  INSERT INTO Categorias (nombre_C, descripcion)
+  VALUES (p_nombre_C, p_descripcion);
+END //
+
+CREATE PROCEDURE ActualizarCategoria(
+  IN p_id_Categoria Int,
+  IN p_nombre_C Varchar(30),
+  IN p_descripcion Varchar(50)
+)
+BEGIN
+  UPDATE Categorias
+  SET nombre_C = p_nombre_C, descripcion = p_descripcion
+  WHERE id_Categoria = p_id_Categoria;
+END //
+
+CREATE PROCEDURE EliminarCategoria(IN p_id_Categoria Int)
+BEGIN
+  DELETE FROM Categorias WHERE id_Categoria = p_id_Categoria;
+END //
+
+-- Procedimientos para Marcas
+CREATE PROCEDURE InsertarMarca(IN p_nombre_Marca Varchar(60))
+BEGIN
+  INSERT INTO Marcas (nombre_Marca)
+  VALUES (p_nombre_Marca);
+END //
+
+CREATE PROCEDURE ActualizarMarca(
+  IN p_id_Marca Int,
+  IN p_nombre_Marca Varchar(60)
+)
+BEGIN
+  UPDATE Marcas
+  SET nombre_Marca = p_nombre_Marca
+  WHERE id_Marca = p_id_Marca;
+END //
+
+CREATE PROCEDURE EliminarMarca(IN p_id_Marca Int)
+BEGIN
+  DELETE FROM Marcas WHERE id_Marca = p_id_Marca;
+END //
+
+-- Procedimientos para Usuario
+CREATE PROCEDURE InsertarUsuario(
+  IN p_nombre_Usuario Varchar(30),
+  IN p_contrasena Varchar(16),
+  IN p_rol Varchar(20)
+)
+BEGIN
+  INSERT INTO Usuario (nombre_Usuario, contrasena, rol)
+  VALUES (p_nombre_Usuario, p_contrasena, p_rol);
+END //
+
+CREATE PROCEDURE ActualizarUsuario(
+  IN p_id_Usuario Int,
+  IN p_nombre_Usuario Varchar(30),
+  IN p_contrasena Varchar(16),
+  IN p_rol Varchar(20)
+)
+BEGIN
+  UPDATE Usuario
+  SET nombre_Usuario = p_nombre_Usuario, contrasena = p_contrasena, rol = p_rol
+  WHERE id_Usuario = p_id_Usuario;
+END //
+
+CREATE PROCEDURE EliminarUsuario(IN p_id_Usuario Int)
+BEGIN
+  DELETE FROM Usuario WHERE id_Usuario = p_id_Usuario;
+END //
+
+-- Procedimientos para Clientes
+CREATE PROCEDURE InsertarCliente(
+  IN p_cedula Varchar(16),
+  IN p_nombre Varchar(30),
+  IN p_apellido Varchar(30),
+  IN p_historialdecompras Varchar(200),
+  IN p_id_Usuario Int
+)
+BEGIN
+  INSERT INTO Clientes (cedula, nombre, apellido, historialdecompras, id_Usuario)
+  VALUES (p_cedula, p_nombre, p_apellido, p_historialdecompras, p_id_Usuario);
+END //
+
+CREATE PROCEDURE ActualizarCliente(
+  IN p_id_Cliente Int,
+  IN p_cedula Varchar(16),
+  IN p_nombre Varchar(30),
+  IN p_apellido Varchar(30),
+  IN p_historialdecompras Varchar(200),
+  IN p_id_Usuario Int
+)
+BEGIN
+  UPDATE Clientes
+  SET cedula = p_cedula, nombre = p_nombre, apellido = p_apellido, historialdecompras = p_historialdecompras, id_Usuario = p_id_Usuario
+  WHERE id_Cliente = p_id_Cliente;
+END //
+
+CREATE PROCEDURE EliminarCliente(IN p_id_Cliente Int)
+BEGIN
+  DELETE FROM Clientes WHERE id_Cliente = p_id_Cliente;
+END //
+
+-- Procedimientos para Productos
+CREATE PROCEDURE InsertarProducto(
+  IN p_id_Categoria Int,
+  IN p_nombre Varchar(30),
+  IN p_descripcion Varchar(200),
+  IN p_precio Decimal(12,2),
+  IN p_id_Marca Int,
+  IN p_id_Promociones Int
+)
+BEGIN
+  INSERT INTO Productos (id_Categoria, nombre, descripcion, precio, id_Marca, id_Promociones)
+  VALUES (p_id_Categoria, p_nombre, p_descripcion, p_precio, p_id_Marca, p_id_Promociones);
+END //
+
+CREATE PROCEDURE ActualizarProducto(
+  IN p_id_Producto Int,
+  IN p_id_Categoria Int,
+  IN p_nombre Varchar(30),
+  IN p_descripcion Varchar(200),
+  IN p_precio Decimal(12,2),
+  IN p_id_Marca Int,
+  IN p_id_Promociones Int
+)
+BEGIN
+  UPDATE Productos
+  SET id_Categoria = p_id_Categoria, nombre = p_nombre, descripcion = p_descripcion, precio = p_precio, id_Marca = p_id_Marca, id_Promociones = p_id_Promociones
+  WHERE id_Producto = p_id_Producto;
+END //
+
+CREATE PROCEDURE EliminarProducto(IN p_id_Producto Int)
+BEGIN
+  DELETE FROM Productos WHERE id_Producto = p_id_Producto;
+END //
+
+-- Procedimientos para Ventas
+CREATE PROCEDURE InsertarVenta(
+  IN p_id_Cliente INT,
+  IN p_id_Vendedor INT,
+  IN p_cantidadProducto INT,
+  IN p_id_ModoPago INT,
+  IN p_fecha DATE,
+  IN p_Estado VARCHAR(50),
+  IN p_TipoVentas VARCHAR(20),
+  IN p_Direccion_Envio VARCHAR(50),
+  IN p_Total_Venta INT
+)
+BEGIN
+  INSERT INTO Ventas (
+    id_Cliente, id_Vendedor, cantidadProducto, id_ModoPago, fecha,
+    Estado, TipoVentas, Direccion_Envio, Total_Venta
+  )
+  VALUES (
+    p_id_Cliente, p_id_Vendedor, p_cantidadProducto, p_id_ModoPago, p_fecha,
+    p_Estado, p_TipoVentas, p_Direccion_Envio, p_Total_Venta
+  );
+END //
+
+CREATE PROCEDURE ActualizarVenta(
+  IN p_cod_Venta INT,
+  IN p_id_Cliente INT,
+  IN p_id_Vendedor INT,
+  IN p_cantidadProducto INT,
+  IN p_id_ModoPago INT,
+  IN p_fecha DATE,
+  IN p_Estado VARCHAR(50),
+  IN p_TipoVentas VARCHAR(20),
+  IN p_Direccion_Envio VARCHAR(50),
+  IN p_Total_Venta INT
+)
+BEGIN
+  UPDATE Ventas
+  SET
+    id_Cliente = p_id_Cliente, id_Vendedor = p_id_Vendedor,
+    cantidadProducto = p_cantidadProducto, id_ModoPago = p_id_ModoPago,
+    fecha = p_fecha, Estado = p_Estado, TipoVentas = p_TipoVentas,
+    Direccion_Envio = p_Direccion_Envio, Total_Venta = p_Total_Venta
+  WHERE cod_Venta = p_cod_Venta;
+END //
+
+CREATE PROCEDURE EliminarVenta(IN p_cod_Venta INT)
+BEGIN
+  DELETE FROM Ventas WHERE cod_Venta = p_cod_Venta;
+END //
+
+-- Procedimientos para DetalleVenta
+CREATE PROCEDURE InsertarDetalleVenta(
+  IN p_cod_Venta INT,
+  IN p_cantidad INT,
+  IN p_id_producto INT,
+  IN p_PrecioUnitario INT,
+  IN p_TotalDetalle INT
+)
+BEGIN
+  INSERT INTO DetalleVenta (
+    cod_Venta, cantidad, id_producto, PrecioUnitario, TotalDetalle
+  )
+  VALUES (
+    p_cod_Venta, p_cantidad, p_id_producto, p_PrecioUnitario, p_TotalDetalle
+  );
+END //
+
+CREATE PROCEDURE ActualizarDetalleVenta(
+  IN p_cod_Venta INT,
+  IN p_cantidad INT,
+  IN p_id_producto INT,
+  IN p_PrecioUnitario INT,
+  IN p_TotalDetalle INT
+)
+BEGIN
+  UPDATE DetalleVenta
+  SET
+    cantidad = p_cantidad, id_producto = p_id_producto,
+    PrecioUnitario = p_PrecioUnitario, TotalDetalle = p_TotalDetalle
+  WHERE cod_Venta = p_cod_Venta;
+END //
+
+CREATE PROCEDURE EliminarDetalleVenta(IN p_cod_Venta INT)
+BEGIN
+  DELETE FROM DetalleVenta WHERE cod_Venta = p_cod_Venta;
+END //
+
+-- Procedimientos para Reseñas
+CREATE PROCEDURE InsertarResena(
+  IN p_id_Producto INT,
+  IN p_id_Cliente INT,
+  IN p_calificacion INT,
+  IN p_comentario Varchar(200),
+  IN p_fecha DATE
+)
+BEGIN
+  INSERT INTO Reseñas (
+    id_Producto, id_Cliente, calificacion, comentario, fecha
+  )
+  VALUES (
+    p_id_Producto, p_id_Cliente, p_calificacion, p_comentario, p_fecha
+  );
+END //
+
+CREATE PROCEDURE ActualizarResena(
+  IN p_id_Resena INT,
+  IN p_id_Producto INT,
+  IN p_id_Cliente INT,
+  IN p_calificacion INT,
+  IN p_comentario Varchar(200),
+  IN p_fecha DATE
+)
+BEGIN
+  UPDATE Reseñas
+  SET
+    id_Producto = p_id_Producto, id_Cliente = p_id_Cliente,
+    calificacion = p_calificacion, comentario = p_comentario,
+    fecha = p_fecha
+  WHERE id_Resena = p_id_Resena;
+END //
+
+CREATE PROCEDURE EliminarResena(IN p_id_Resena INT)
+BEGIN
+  DELETE FROM Reseñas WHERE id_Resena = p_id_Resena;
+END //
+
+DELIMITER ;
+

@@ -1,0 +1,148 @@
+TIGGER
+DELIMITER //
+
+-- Trigger para Categorias
+CREATE TRIGGER trg_Categorias
+AFTER INSERT, UPDATE, DELETE ON Categorias
+FOR EACH ROW
+BEGIN
+  DECLARE accion VARCHAR(10);
+  IF (INSERTING) THEN
+    SET accion = 'INSERT';
+  ELSEIF (UPDATING) THEN
+    SET accion = 'UPDATE';
+  ELSE
+    SET accion = 'DELETE';
+  END IF;
+
+  INSERT INTO bitacora (transaccion, usuario, fecha, tabla)
+  VALUES (accion, USER(), NOW(), 'Categorias');
+END //
+
+-- Trigger para Marcas
+CREATE TRIGGER trg_Marcas
+AFTER INSERT, UPDATE, DELETE ON Marcas
+FOR EACH ROW
+BEGIN
+  DECLARE accion VARCHAR(10);
+  IF (INSERTING) THEN
+    SET accion = 'INSERT';
+  ELSEIF (UPDATING) THEN
+    SET accion = 'UPDATE';
+  ELSE
+    SET accion = 'DELETE';
+  END IF;
+
+  INSERT INTO bitacora (transaccion, usuario, fecha, tabla)
+  VALUES (accion, USER(), NOW(), 'Marcas');
+END //
+
+-- Trigger para Usuario
+CREATE TRIGGER trg_Usuario
+AFTER INSERT, UPDATE, DELETE ON Usuario
+FOR EACH ROW
+BEGIN
+  DECLARE accion VARCHAR(10);
+  IF (INSERTING) THEN
+    SET accion = 'INSERT';
+  ELSEIF (UPDATING) THEN
+    SET accion = 'UPDATE';
+  ELSE
+    SET accion = 'DELETE';
+  END IF;
+
+  INSERT INTO bitacora (transaccion, usuario, fecha, tabla)
+  VALUES (accion, USER(), NOW(), 'Usuario');
+END //
+
+-- Trigger para Clientes
+CREATE TRIGGER trg_Clientes
+AFTER INSERT, UPDATE, DELETE ON Clientes
+FOR EACH ROW
+BEGIN
+  DECLARE accion VARCHAR(10);
+  IF (INSERTING) THEN
+    SET accion = 'INSERT';
+  ELSEIF (UPDATING) THEN
+    SET accion = 'UPDATE';
+  ELSE
+    SET accion = 'DELETE';
+  END IF;
+
+  INSERT INTO bitacora (transaccion, usuario, fecha, tabla)
+  VALUES (accion, USER(), NOW(), 'Clientes');
+END //
+
+-- Trigger para Productos
+CREATE TRIGGER trg_Productos
+AFTER INSERT, UPDATE, DELETE ON Productos
+FOR EACH ROW
+BEGIN
+  DECLARE accion VARCHAR(10);
+  IF (INSERTING) THEN
+    SET accion = 'INSERT';
+  ELSEIF (UPDATING) THEN
+    SET accion = 'UPDATE';
+  ELSE
+    SET accion = 'DELETE';
+  END IF;
+
+  INSERT INTO bitacora (transaccion, usuario, fecha, tabla)
+  VALUES (accion, USER(), NOW(), 'Productos');
+END //
+
+-- Trigger para Ventas
+CREATE TRIGGER trg_Ventas
+AFTER INSERT, UPDATE, DELETE ON Ventas
+FOR EACH ROW
+BEGIN
+  DECLARE accion VARCHAR(10);
+  IF (INSERTING) THEN
+    SET accion = 'INSERT';
+  ELSEIF (UPDATING) THEN
+    SET accion = 'UPDATE';
+  ELSE
+    SET accion = 'DELETE';
+  END IF;
+
+  INSERT INTO bitacora (transaccion, usuario, fecha, tabla)
+  VALUES (accion, USER(), NOW(), 'Ventas');
+END //
+
+-- Trigger para DetalleVenta
+CREATE TRIGGER trg_DetalleVenta
+AFTER INSERT, UPDATE, DELETE ON DetalleVenta
+FOR EACH ROW
+BEGIN
+  DECLARE accion VARCHAR(10);
+  IF (INSERTING) THEN
+    SET accion = 'INSERT';
+  ELSEIF (UPDATING) THEN
+    SET accion = 'UPDATE';
+  ELSE
+    SET accion = 'DELETE';
+  END IF;
+
+  INSERT INTO bitacora (transaccion, usuario, fecha, tabla)
+  VALUES (accion, USER(), NOW(), 'DetalleVenta');
+END //
+
+-- Trigger para Reseñas
+CREATE TRIGGER trg_Reseñas
+AFTER INSERT, UPDATE, DELETE ON Reseñas
+FOR EACH ROW
+BEGIN
+  DECLARE accion VARCHAR(10);
+  IF (INSERTING) THEN
+    SET accion = 'INSERT';
+  ELSEIF (UPDATING) THEN
+    SET accion = 'UPDATE';
+  ELSE
+    SET accion = 'DELETE';
+  END IF;
+
+  INSERT INTO bitacora (transaccion, usuario, fecha, tabla)
+  VALUES (accion, USER(), NOW(), 'Reseñas');
+END //
+
+DELIMITER ;
